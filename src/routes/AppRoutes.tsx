@@ -1,3 +1,4 @@
+import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
 import PrivateRoute from "./PrivateRoute";
@@ -5,13 +6,13 @@ import PublicRoute from "./PublicRoute";
 
 import Login from "../pages/Login";
 import ForgotPassword from "../pages/ForgotPassword";
-import OTPVerification from "../pages/VerifyOTP";
 
 import Dashboard from "../pages/Dashboard";
 import Customers from "../pages/Customers";
 import AdminLayout from "../layouts/AdminLayout";
+import Profile from "../pages/Profile";
 
-export default function AppRoutes() {
+export default function AppRoutes(): React.JSX.Element {
     return (
         <Routes>
 
@@ -44,7 +45,6 @@ export default function AppRoutes() {
                 }
             />
 
-            <Route path="/verify-otp" element={<OTPVerification />} />
 
 
             {/* ===== PROTECTED ADMIN AREA ===== */}
@@ -59,6 +59,11 @@ export default function AppRoutes() {
                 <Route index element={<Dashboard />} />
                 <Route path="customers" element={<Customers />} />
             </Route>
+
+
+            {/* profile page */}
+            <Route path="/profile" element={<Profile />} />
+
 
         </Routes>
     );

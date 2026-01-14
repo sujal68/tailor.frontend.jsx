@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { LoaderProps } from '../types';
 
-const Loader = ({ show = true, onLoadingComplete }) => {
-  const [isExiting, setIsExiting] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+interface LoaderComponentProps extends LoaderProps {
+  onLoadingComplete?: () => void;
+}
+
+const Loader: React.FC<LoaderComponentProps> = ({ show = true, onLoadingComplete }) => {
+  const [isExiting, setIsExiting] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (show) {
@@ -12,13 +17,12 @@ const Loader = ({ show = true, onLoadingComplete }) => {
       // Start exit animation
       setIsExiting(true);
 
-      // Wait for exit animation to complete before unmounting
       const timer = setTimeout(() => {
         setIsVisible(false);
         if (onLoadingComplete) {
           onLoadingComplete();
         }
-      }, 1200); // Match exit animation duration
+      }, 1200);
 
       return () => clearTimeout(timer);
     }

@@ -1,7 +1,8 @@
-import AppRoutes from './routes/AppRoutes'
+import React from 'react';
+import AppRoutes from './routes/AppRoutes';
 import { Toaster } from "react-hot-toast";
 
-export default function App() {
+export default function App(): React.JSX.Element {
   return (
     <>
       <AppRoutes />
