@@ -14,16 +14,13 @@ const Loader: React.FC<LoaderComponentProps> = ({ show = true, onLoadingComplete
       setIsVisible(true);
       setIsExiting(false);
     } else {
-      // Start exit animation
       setIsExiting(true);
-
       const timer = setTimeout(() => {
         setIsVisible(false);
         if (onLoadingComplete) {
           onLoadingComplete();
         }
       }, 1200);
-
       return () => clearTimeout(timer);
     }
   }, [show, onLoadingComplete]);
@@ -31,469 +28,112 @@ const Loader: React.FC<LoaderComponentProps> = ({ show = true, onLoadingComplete
   if (!isVisible) return null;
 
   return (
-    <div className={`loader-container ${isExiting ? 'exiting' : ''}`}>
+    <div
+      className={`fixed inset-0 w-full h-full flex flex-col justify-center items-center z-[9999] font-serif overflow-hidden 
+      bg-[linear-gradient(135deg,#f8f3e6_0%,#faf6ee_100%)]
+      before:content-[''] before:absolute before:inset-0 before:bg-[linear-gradient(90deg,transparent_79px,#c5a05914_79px,transparent_80px),linear-gradient(0deg,transparent_79px,#c5a05914_79px,transparent_80px)] before:bg-[length:80px_80px] before:opacity-[0.15] before:pointer-events-none
+      after:content-[''] after:absolute after:inset-0 after:bg-[linear-gradient(135deg,rgba(255,255,255,0.6)_0%,transparent_50%)] after:pointer-events-none
+      ${isExiting ? 'animate-[fadeOut_1.2s_ease-out_forwards]' : ''}`}
+    >
       <style>
         {`
-          :root {
-            --luxury-gold: #c5a059;
-            --warm-beige: #f8f3e6;
-            --cream-fabric: #faf6ee;
-            --soft-beige: #f5f0e4;
-            --stitch-beige: #e8e0d0;
-            --shadow-light: rgba(197, 160, 89, 0.08);
-            --shadow-medium: rgba(197, 160, 89, 0.12);
-            --dark-gold: #b08c46;
-          }
-
-          .loader-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--warm-beige) 0%, var(--cream-fabric) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            font-family: 'Georgia', 'Times New Roman', serif;
-            overflow: hidden;
-          }
-
-          .loader-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-              linear-gradient(90deg, transparent 79px, var(--shadow-light) 79px, transparent 80px),
-              linear-gradient(0deg, transparent 79px, var(--shadow-light) 79px, transparent 80px);
-            background-size: 80px 80px;
-            opacity: 0.15;
-            pointer-events: none;
-          }
-
-          .loader-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, transparent 50%);
-            pointer-events: none;
-          }
-
-          .sewing-machine {
-            position: relative;
-            width: 280px;
-            height: 200px;
-            margin-bottom: 40px;
-            filter: drop-shadow(2px 4px 8px var(--shadow-medium));
-          }
-
-          /* Machine Base */
-          .machine-base {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 220px;
-            height: 80px;
-            background: linear-gradient(160deg, #e8e2d5 0%, #d8d0c0 100%);
-            border-radius: 12px 12px 6px 6px;
-            overflow: hidden;
-            box-shadow: 
-              inset 0 2px 4px rgba(255,255,255,0.8),
-              inset 0 -2px 4px rgba(0,0,0,0.1),
-              0 4px 12px var(--shadow-medium);
-          }
-
-          .machine-base::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 30px;
-            background: linear-gradient(160deg, #f0eade 0%, #e0d8c8 100%);
-            border-radius: 12px 12px 0 0;
-          }
-
-          /* Machine Body */
-          .machine-body {
-            position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 100px;
-            background: linear-gradient(160deg, #f5f1e8 0%, #e5ddd0 100%);
-            border-radius: 10px;
-            box-shadow: 
-              inset 0 1px 3px rgba(255,255,255,0.9),
-              inset 0 -1px 3px rgba(0,0,0,0.1),
-              0 6px 16px var(--shadow-medium);
-          }
-
-          .machine-body::after {
-            content: '';
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 1px solid var(--stitch-beige);
-            border-radius: 6px;
-            opacity: 0.5;
-          }
-
-          /* Hand Wheel */
-          .hand-wheel {
-            position: absolute;
-            top: 30px;
-            right: -15px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #d4c8ae 0%, #c5b89e 100%);
-            border: 3px solid var(--luxury-gold);
-            box-shadow: 
-              inset 0 0 8px rgba(255,255,255,0.8),
-              0 2px 6px rgba(0,0,0,0.1);
-            animation: rotateWheel 4s linear infinite;
-          }
-
-          .hand-wheel::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 12px;
-            height: 12px;
-            background: var(--luxury-gold);
-            border-radius: 50%;
-          }
-
-          .hand-wheel::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            width: 20px;
-            height: 4px;
-            background: var(--dark-gold);
-            border-radius: 2px;
-          }
-
-          /* Needle Bar */
-          .needle-bar {
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 50px;
-            background: linear-gradient(to bottom, #b0a080 0%, #888070 100%);
-            border-radius: 4px;
-            animation: vibrate 0.1s infinite;
-          }
-
-          /* Needle */
-          .needle {
-            position: absolute;
-            top: 90px;
-            left: 50%;
-            transform: translateX(-50%) translateY(0);
-            width: 3px;
-            height: 25px;
-            background: linear-gradient(to bottom, #c0c0c0 0%, #a0a0a0 100%);
-            border-radius: 1px 1px 0 0;
-            animation: ${isExiting ? 'stitchComplete 1.2s ease-out forwards' : 'stitch 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite'};
-            z-index: 10;
-          }
-
-          .needle-eye {
-            position: absolute;
-            top: 4px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 2px;
-            background: #000;
-            border-radius: 50%;
-          }
-
-          /* Thread */
-          .thread {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1px;
-            height: 90px;
-            background: linear-gradient(to bottom, 
-              transparent 0%, 
-              var(--luxury-gold) 20%, 
-              var(--luxury-gold) 80%, 
-              transparent 100%);
-            opacity: 0.8;
-            transform-origin: top center;
-            animation: ${isExiting ? 'threadRelax 1.2s ease-out forwards' : 'threadStretch 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite'};
-          }
-
-          /* Fabric */
-          .fabric {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 20px;
-            background: linear-gradient(90deg, 
-              var(--cream-fabric) 0%, 
-              var(--warm-beige) 50%, 
-              var(--cream-fabric) 100%);
-            border-top: 1px dashed var(--stitch-beige);
-            animation: ${isExiting ? 'fabricStop 1.2s ease-out forwards' : 'fabricSlide 6s linear infinite'};
-            box-shadow: 
-              inset 0 1px 2px rgba(255,255,255,0.8),
-              0 2px 4px var(--shadow-light);
-          }
-
-          .fabric::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: repeating-linear-gradient(90deg, 
-              transparent, 
-              transparent 3px, 
-              var(--luxury-gold) 3px, 
-              var(--luxury-gold) 6px);
-            opacity: 0.3;
-          }
-
-          /* Machine Details */
-          .machine-detail {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 60px;
-            height: 15px;
-            background: linear-gradient(90deg, var(--dark-gold) 0%, var(--luxury-gold) 100%);
-            border-radius: 3px;
-            opacity: 0.6;
-          }
-
-          .machine-detail-2 {
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            width: 40px;
-            height: 10px;
-            background: var(--dark-gold);
-            border-radius: 2px;
-            opacity: 0.4;
-          }
-
-          /* Status Text */
-          .status-text {
-            margin-top: 30px;
-            color: var(--dark-gold);
-            font-size: 16px;
-            font-weight: 300;
-            letter-spacing: 1px;
-            text-align: center;
-            opacity: ${isExiting ? 0 : 1};
-            animation: ${isExiting ? 'none' : 'textFade 3s ease-in-out infinite'};
-            transition: opacity 0.6s ease;
-            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-          }
-
-          /* Exit State */
-          .loader-container.exiting {
-            animation: fadeOut 1.2s ease-out forwards;
-          }
-
-          .loader-container.exiting .hand-wheel {
-            animation: rotateSlow 2s ease-out forwards;
-          }
-
-          /* Animations */
           @keyframes stitch {
-            0%, 100% {
-              transform: translateX(-50%) translateY(0);
-            }
-            50% {
-              transform: translateX(-50%) translateY(20px);
-            }
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(20px); }
           }
-
           @keyframes stitchComplete {
-            0% {
-              transform: translateX(-50%) translateY(0);
-            }
-            50% {
-              transform: translateX(-50%) translateY(20px);
-            }
-            100% {
-              transform: translateX(-50%) translateY(0);
-              animation-play-state: paused;
-            }
+            0% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(20px); }
+            100% { transform: translateX(-50%) translateY(0); }
           }
-
           @keyframes threadStretch {
-            0%, 100% {
-              height: 90px;
-              opacity: 0.8;
-            }
-            50% {
-              height: 110px;
-              opacity: 0.9;
-            }
+            0%, 100% { height: 90px; opacity: 0.8; }
+            50% { height: 110px; opacity: 0.9; }
           }
-
           @keyframes threadRelax {
-            0% {
-              height: 90px;
-              opacity: 0.8;
-            }
-            50% {
-              height: 110px;
-              opacity: 0.9;
-            }
-            100% {
-              height: 90px;
-              opacity: 0;
-            }
+            0% { height: 90px; opacity: 0.8; }
+            50% { height: 110px; opacity: 0.9; }
+            100% { height: 90px; opacity: 0; }
           }
-
           @keyframes fabricSlide {
-            0% {
-              background-position: 160px 0;
-            }
-            100% {
-              background-position: 0 0;
-            }
+            0% { background-position: 160px 0; }
+            100% { background-position: 0 0; }
           }
-
           @keyframes fabricStop {
-            0% {
-              background-position: 160px 0;
-            }
-            50% {
-              background-position: 80px 0;
-            }
-            100% {
-              background-position: 80px 0;
-              animation-play-state: paused;
-            }
+            0% { background-position: 160px 0; }
+            50% { background-position: 80px 0; }
+            100% { background-position: 80px 0; }
           }
-
           @keyframes rotateWheel {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
           }
-
           @keyframes rotateSlow {
-            0% {
-              transform: rotate(0deg);
-              animation-timing-function: ease-out;
-            }
-            100% {
-              transform: rotate(180deg);
-              animation-play-state: paused;
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(180deg); }
           }
-
           @keyframes vibrate {
-            0%, 100% {
-              transform: translateX(-50%) translateX(-0.3px);
-            }
-            50% {
-              transform: translateX(-50%) translateX(0.3px);
-            }
+            0%, 100% { transform: translateX(-50%) translateX(-0.3px); }
+            50% { transform: translateX(-50%) translateX(0.3px); }
           }
-
           @keyframes textFade {
-            0%, 100% {
-              opacity: 0.6;
-            }
-            50% {
-              opacity: 1;
-            }
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
           }
-
           @keyframes fadeOut {
-            0% {
-              opacity: 1;
-              transform: scale(1);
-            }
-            100% {
-              opacity: 0;
-              transform: scale(0.98);
-            }
-          }
-
-          /* Responsive Design */
-          @media (max-width: 768px) {
-            .sewing-machine {
-              transform: scale(0.8);
-            }
-            
-            .status-text {
-              font-size: 14px;
-            }
-          }
-
-          @media (max-width: 480px) {
-            .sewing-machine {
-              transform: scale(0.7);
-            }
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.98); }
           }
         `}
       </style>
 
-      <div className="sewing-machine">
+      <div className="relative w-[280px] h-[200px] mb-10 drop-shadow-[2px_4px_8px_rgba(197,160,89,0.12)] scale-[0.7] sm:scale-[0.8] md:scale-100">
         {/* Machine Base */}
-        <div className="machine-base"></div>
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[220px] h-20 bg-[linear-gradient(160deg,#e8e2d5_0%,#d8d0c0_100%)] rounded-t-xl rounded-b-md overflow-hidden shadow-[inset_0_2px_4px_rgba(255,255,255,0.8),inset_0_-2px_4px_rgba(0,0,0,0.1),0_4px_12px_rgba(197,160,89,0.12)] 
+          before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-[30px] before:bg-[linear-gradient(160deg,#f0eade_0%,#e0d8c8_100%)] before:rounded-t-xl" />
 
         {/* Machine Body */}
-        <div className="machine-body">
-          <div className="machine-detail"></div>
-          <div className="machine-detail-2"></div>
+        <div className="absolute bottom-[70px] left-1/2 -translate-x-1/2 w-[180px] h-[100px] bg-[linear-gradient(160deg,#f5f1e8_0%,#e5ddd0_100%)] rounded-[10px] shadow-[inset_0_1px_3px_rgba(255,255,255,0.9),inset_0_-1px_3px_rgba(0,0,0,0.1),0_6px_16px_rgba(197,160,89,0.12)] 
+          after:content-[''] after:absolute after:inset-2.5 after:border after:border-[#e8e0d0] after:rounded-md after:opacity-50">
+          <div className="absolute top-5 left-5 w-[60px] h-[15px] bg-[linear-gradient(90deg,#b08c46_0%,#c5a059_100%)] rounded-sm opacity-60" />
+          <div className="absolute top-[60px] right-5 w-10 h-2.5 bg-[#b08c46] rounded-sm opacity-40" />
         </div>
 
         {/* Hand Wheel */}
-        <div className={`hand-wheel ${isExiting ? "exit" : ""}`}></div>
+        <div
+          className={`absolute top-[30px] -right-[15px] w-10 h-10 rounded-full bg-[linear-gradient(135deg,#d4c8ae_0%,#c5b89e_100%)] border-[3px] border-[#c5a059] shadow-[inset_0_0_8px_rgba(255,255,255,0.8),0_2px_6px_rgba(0,0,0,0.1)] 
+          before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-3 before:h-3 before:bg-[#c5a059] before:rounded-full 
+          after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:rotate-45 after:w-5 after:h-1 after:bg-[#b08c46] after:rounded-sm
+          ${isExiting ? 'animate-[rotateSlow_2s_ease-out_forwards]' : 'animate-[rotateWheel_4s_linear_infinite]'}`}
+        />
 
         {/* Needle Assembly */}
-        <div className="needle-bar"></div>
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-2 h-[50px] bg-[linear-gradient(to_bottom,#b0a080_0%,#888070_100%)] rounded-full animate-[vibrate_0.1s_infinite]" />
 
-        <div className={`thread ${isExiting ? "exit" : ""}`}></div>
+        <div
+          className={`absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-[90px] bg-[linear-gradient(to_bottom,transparent_0%,#c5a059_20%,#c5a059_80%,transparent_100%)] opacity-80 origin-top 
+          ${isExiting ? 'animate-[threadRelax_1.2s_ease-out_forwards]' : 'animate-[threadStretch_1.2s_cubic-bezier(0.4,0,0.2,1)_infinite]'}`}
+        />
 
-        <div className={`needle ${isExiting ? "exit" : ""}`}>
-          <div className="needle-eye"></div>
+        <div
+          className={`absolute top-[90px] left-1/2 -translate-x-1/2 w-[3px] h-[25px] bg-[linear-gradient(to_bottom,#c0c0c0_0%,#a0a0a0_100%)] rounded-t-[1px] z-10 
+          ${isExiting ? 'animate-[stitchComplete_1.2s_ease-out_forwards]' : 'animate-[stitch_1.2s_cubic-bezier(0.4,0,0.2,1)_infinite]'}`}
+        >
+          <div className="absolute top-1 left-1/2 -translate-x-1/2 w-[2px] h-[2px] bg-black rounded-full" />
         </div>
 
         {/* Fabric */}
-        <div className={`fabric ${isExiting ? "exit" : ""}`}></div>
+        <div
+          className={`absolute bottom-10 left-1/2 -translate-x-1/2 w-40 h-5 bg-[linear-gradient(90deg,#faf6ee_0%,#f8f3e6_50%,#faf6ee_100%)] border-t border-dashed border-[#e8e0d0] shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(197,160,89,0.08)] 
+          before:content-[''] before:absolute before:-top-[2px] before:left-0 before:right-0 before:h-[1px] before:bg-[repeating-linear-gradient(90deg,transparent,transparent_3px,#c5a059_3px,#c5a059_6px)] before:opacity-30 
+          ${isExiting ? 'animate-[fabricStop_1.2s_ease-out_forwards]' : 'animate-[fabricSlide_6s_linear_infinite]'}`}
+        />
       </div>
 
-
-      <div className="status-text">
+      <div
+        className={`mt-[30px] text-[#b08c46] text-sm md:text-base font-light tracking-[1px] text-center transition-opacity duration-700 [text-shadow:0_1px_2px_rgba(255,255,255,0.8)] 
+        ${isExiting ? 'opacity-0' : 'animate-[textFade_3s_ease-in-out_infinite]'}`}
+      >
         Preparing your tailoring workspace...
       </div>
     </div>

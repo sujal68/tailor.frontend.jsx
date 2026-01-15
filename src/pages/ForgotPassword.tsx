@@ -136,82 +136,99 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen overflow-hidden font-inter bg-[#f1e9df] relative">
-      {/* Background Texture */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-30"
-        style={{
-          backgroundImage: 'url("https://www.transparenttextures.com/patterns/natural-paper.png")'
-        }}
-      />
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@300;400;500;600;700&display=swap');
+        .vignette::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.15) 100%);
+          pointer-events: none;
+          z-index: 1;
+        }
+      `}</style>
+      
+      <div className="min-h-screen overflow-hidden font-['Inter',sans-serif] bg-[#f1e9df] relative vignette" style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, #fff 0%, transparent 50%), radial-gradient(circle at 80% 70%, #fff 0%, transparent 50%), linear-gradient(135deg, #f1e9df 0%, #e6dace 100%)' }}>
+        <div
+          className="absolute inset-0 pointer-events-none opacity-30"
+          style={{
+            backgroundImage: 'url("https://www.transparenttextures.com/patterns/natural-paper.png")'
+          }}
+        />
 
-      <div className="relative z-10 flex w-full h-screen">
+        <div className="relative z-10 flex w-full h-screen">
         {/* Left Side: Branding */}
         <div
-          className="hidden lg:flex lg:w-1/2 xl:w-[50%] p-8 md:p-12 lg:p-16 xl:p-20 relative flex-col justify-center rounded-r-[28px] shadow-[inset_0_0_120px_rgba(255,255,255,0.55)]"
+          className="hidden md:flex md:w-[40%] lg:w-1/2 py-8 px-6 md:py-12 md:px-10 lg:py-16 lg:px-16 xl:py-[90px] xl:px-[100px] relative flex-col justify-center rounded-r-[28px] bg-cover bg-center bg-no-repeat before:content-[''] before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.6),transparent_60%)] before:pointer-events-none before:rounded-[28px]"
           style={{
             backgroundImage: 'url("/src/assets/loginLeft.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            boxShadow: 'inset 0 0 120px rgba(255,255,255,0.55)'
           }}
         >
-          <div className="absolute top-8 left-8 opacity-20">
+          <div className="absolute top-6 left-6 flex items-center gap-2 z-10 bg-white/40 backdrop-blur-sm px-4 py-2 rounded-full border border-white/60">
+            <MannequinIcon />
+            <div>
+              <h2 className="font-['Instrument_Serif',serif] text-base m-0 leading-none text-[#4A3C31]">Tailor</h2>
+              <p className="text-[8px] uppercase tracking-[1px] mt-0.5 mb-0 text-[#7c6a5a]">Management</p>
+            </div>
+          </div>
+
+          <div className="absolute -top-20 -left-10 -rotate-[15deg] opacity-20">
             <MeasuringTapeSVG />
           </div>
 
-          <h1 className="font-instrument-serif text-4xl lg:text-5xl xl:text-6xl text-[#5d4635] mb-4 lg:mb-6 tracking-wider leading-tight">
+          <h1 className="font-['Instrument_Serif',serif] text-3xl md:text-4xl lg:text-5xl xl:text-[64px] text-[#5d4635] mb-4 lg:mb-7 tracking-[2px] relative z-[2] font-bold leading-tight" style={{ textShadow: '0 2px 2px rgba(255,255,255,0.8), 0 6px 12px rgba(0,0,0,0.08)' }}>
             Securing Your<br />Digital Atelier.
           </h1>
 
-          <p className="text-base lg:text-lg text-[#7c6a5a] mb-6 lg:mb-8 leading-relaxed">
-            Follow our handcrafted recovery process to regain access<br />
+          <p className="text-sm md:text-base lg:text-lg text-[#7c6a5a] mb-5 lg:mb-[34px] leading-relaxed relative z-[2]">
+            Follow our handcrafted recovery process to regain access<br className="hidden lg:block" />
             to your master tailoring dashboard securely.
           </p>
 
-          <ul className="space-y-3 lg:space-y-5">
-            <li className="flex items-center gap-3 lg:gap-4 text-sm lg:text-base text-[#4A3C31] font-medium">
+          <ul className="list-none p-0 relative z-[2] space-y-3 lg:space-y-5">
+            <li className="flex items-center gap-3 lg:gap-4 text-sm lg:text-base text-[#4A3C31] font-medium transition-transform duration-300 ease-[ease] cursor-default hover:translate-x-[5px]">
               <CheckIcon />
               <span>Encrypted Identity Verification</span>
             </li>
-            <li className="flex items-center gap-3 lg:gap-4 text-sm lg:text-base text-[#4A3C31] font-medium">
+            <li className="flex items-center gap-3 lg:gap-4 text-sm lg:text-base text-[#4A3C31] font-medium transition-transform duration-300 ease-[ease] cursor-default hover:translate-x-[5px]">
               <CheckIcon />
               <span>Secure Password Restoration</span>
             </li>
-            <li className="flex items-center gap-3 lg:gap-4 text-sm lg:text-base text-[#4A3C31] font-medium">
+            <li className="flex items-center gap-3 lg:gap-4 text-sm lg:text-base text-[#4A3C31] font-medium transition-transform duration-300 ease-[ease] cursor-default hover:translate-x-[5px]">
               <CheckIcon />
               <span>Instant Account Recovery</span>
             </li>
           </ul>
 
-          <div className="absolute bottom-8 right-8 opacity-20">
+          <div className="absolute -bottom-[100px] right-0 rotate-[10deg] opacity-20">
             <MeasuringTapeSVG />
           </div>
         </div>
 
         {/* Right Side: Form */}
-        <div className="w-full lg:w-1/2 xl:w-[55%] flex items-center justify-center">
+        <div className="w-full md:w-[60%] lg:w-1/2 flex items-center justify-center">
           <div
-            className="w-full h-full bg-cover bg-center flex items-center justify-center"
-            style={{
-              backgroundImage: 'url("/src/assets/loginRight.png")'
-            }}
+            className="w-full h-full bg-cover bg-center flex items-center justify-center md:bg-none"
+            style={{ backgroundImage: window.innerWidth < 768 ? 'none' : 'url("/src/assets/loginRight.png")' }}
           >
-            <div className="bg-white/45 backdrop-blur-xl rounded-3xl p-2 sm:p-3 shadow-2xl border border-white/60 w-full max-w-[92%] sm:max-w-md md:max-w-lg">
-              <div className="border-[1.8px] border-dashed border-[#997851] rounded-[20px] sm:rounded-3xl p-6 sm:p-8 md:p-10 text-center">
+            <div className="bg-white/50 backdrop-blur-[18px] rounded-[24px] md:rounded-[28px] p-2.5 sm:p-3 border border-white/70 w-full max-w-[95%] sm:max-w-md md:max-w-lg shadow-[0_35px_70px_rgba(93,74,59,0.18),0_15px_30px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.7)]">
+              <div className="border-[2px] border-dashed border-[#997851] rounded-[20px] md:rounded-[24px] py-6 sm:py-7 md:py-8 px-5 sm:px-7 md:px-10 text-center bg-white/30">
                 {/* Header */}
                 <header className="mb-6 sm:mb-8">
-                  <div className="flex justify-center mb-4 sm:mb-6">
-                    <div className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/50 border border-[#d6c8b8]">
+                  <div className="flex justify-center mb-5 md:mb-6">
+                    <div className="bg-gradient-to-br from-[#fdfbf7] to-[#f1e9df] p-2 rounded-xl border-2 border-dashed border-[#d6c8b8] shadow-md">
                       <MannequinIcon />
                     </div>
                   </div>
 
                   {step === 1 && (
                     <div>
-                      <h3 className="font-instrument-serif text-2xl sm:text-[28px] md:text-3xl text-[#504225] mb-2">
+                      <h3 className="font-['Instrument_Serif',serif] text-2xl sm:text-3xl md:text-[36px] text-[#504225] mb-2 font-bold">
                         Recover Account
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#7c6a5a]">
+                      <p className="text-xs sm:text-sm md:text-base text-[#7c6a5a]">
                         Enter your email to receive a secure code.
                       </p>
                     </div>
@@ -219,10 +236,10 @@ const ForgotPassword: React.FC = () => {
 
                   {step === 2 && (
                     <div>
-                      <h3 className="font-instrument-serif text-2xl sm:text-[28px] md:text-3xl text-[#504225] mb-2">
+                      <h3 className="font-['Instrument_Serif',serif] text-2xl sm:text-3xl md:text-[36px] text-[#504225] mb-2 font-bold">
                         Verify Identity
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#7c6a5a]">
+                      <p className="text-xs sm:text-sm md:text-base text-[#7c6a5a]">
                         We've sent a 6-digit code to <br />
                         <b className="text-[#5d4a3b]">{email}</b>
                       </p>
@@ -231,10 +248,10 @@ const ForgotPassword: React.FC = () => {
 
                   {step === 3 && (
                     <div>
-                      <h3 className="font-instrument-serif text-2xl sm:text-[28px] md:text-3xl text-[#504225] mb-2">
+                      <h3 className="font-['Instrument_Serif',serif] text-2xl sm:text-3xl md:text-[36px] text-[#504225] mb-2 font-bold">
                         Reset Password
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#7c6a5a]">
+                      <p className="text-xs sm:text-sm md:text-base text-[#7c6a5a]">
                         Choose a strong password for your atelier.
                       </p>
                     </div>
@@ -249,8 +266,8 @@ const ForgotPassword: React.FC = () => {
                   {/* Step 1: Email */}
                   {step === 1 && (
                     <div className="animate-fadeIn">
-                      <div className="mb-3 sm:mb-4">
-                        <div className="relative bg-white/50 border-[1.2px] border-dashed border-[#d6c8b8] rounded-[20px] sm:rounded-3xl h-12 sm:h-14 flex items-center px-4 sm:px-5 transition-all duration-300 focus-within:bg-white focus-within:border-solid focus-within:border-[#8a764d] focus-within:-translate-y-0.5">
+                      <div className="mb-4 md:mb-5">
+                        <div className="relative bg-white/60 border-[1.5px] border-dashed border-[#d6c8b8] rounded-[22px] md:rounded-[25px] h-[54px] md:h-[60px] flex items-center px-4 md:px-5 transition-all duration-300 focus-within:bg-white focus-within:border-solid focus-within:border-[#C5A059] focus-within:border-[2px] focus-within:-translate-y-[2px] focus-within:shadow-[0_0_0_4px_rgba(197,160,89,0.15)] after:content-[''] after:absolute after:inset-[5px] after:border after:border-dashed after:border-[rgba(214,200,184,0.4)] after:rounded-[18px] md:after:rounded-[21px] after:pointer-events-none" style={{ backgroundImage: 'radial-gradient(#efe6da 0.3px, transparent 0.3px)', backgroundSize: '3px 3px', boxShadow: '0 0 0 4px rgba(197, 160, 89, 0.05), inset 0 1px 3px rgba(0,0,0,0.02)' }}>
                           <MailIcon />
                           <input
                             type="email"
@@ -258,24 +275,26 @@ const ForgotPassword: React.FC = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             autoComplete="email"
-                            className="bg-transparent border-none outline-none flex-1 px-2 sm:px-3 text-[#4A3C31] text-sm sm:text-base"
+                            className="bg-transparent border-none outline-none flex-1 px-3 text-[#4A3C31] text-sm md:text-base z-[2]"
                           />
-                          <div className="absolute inset-1 border border-dashed border-[#d6c8b8]/45 rounded-[16px] sm:rounded-[20px] pointer-events-none" />
                         </div>
                       </div>
                       <button
                         type="button"
                         onClick={handleSendOTP}
                         disabled={loading}
-                        className="w-full h-12 sm:h-14 rounded-[18px] sm:rounded-[20px] bg-gradient-to-br from-[#74602a] via-[#c5a059] to-[#b38b45] text-white font-semibold text-base sm:text-lg shadow-[0_10px_25px_rgba(197,160,89,0.3)] relative overflow-hidden transition-all duration-400 hover:-translate-y-[3px] hover:shadow-[0_15px_30px_rgba(197,160,89,0.5)] hover:brightness-105 disabled:opacity-85 disabled:cursor-not-allowed flex items-center justify-center"
+                        className="w-full h-[54px] md:h-[60px] rounded-[20px] md:rounded-[22px] bg-gradient-to-br from-[#74602a] via-[#c5a059] to-[#b38b45] text-white font-bold text-base md:text-lg shadow-[0_12px_28px_rgba(197,160,89,0.35)] relative overflow-hidden transition-all duration-300 hover:-translate-y-[4px] hover:shadow-[0_15px_35px_rgba(197,160,89,0.45)] active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center before:content-[''] before:absolute before:inset-[6px] before:border-[1.5px] before:border-dashed before:border-white/50 before:rounded-[16px] before:pointer-events-none before:transition-all before:duration-300 hover:before:border-white/90"
                       >
                         {loading ? (
-                          <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
+                          <span className="w-6 h-6 border-[3px] border-white/40 border-t-white rounded-full animate-spin inline-block" />
                         ) : (
                           "Send Verification Code"
                         )}
-                        <div className="absolute inset-[5px] border border-dashed border-white/40 rounded-[14px] sm:rounded-[16px] pointer-events-none" />
                       </button>
+                      <div className="flex items-center justify-center gap-2 mt-4 text-[10px] sm:text-xs text-[#7c6a5a]">
+                        <ShieldIcon />
+                        <span>Secured by 256-bit Encryption</span>
+                      </div>
                     </div>
                   )}
 
@@ -334,53 +353,50 @@ const ForgotPassword: React.FC = () => {
                           setStep(3);
                         }}
                         disabled={loading}
-                        className="w-full h-12 sm:h-14 rounded-[18px] sm:rounded-[20px] bg-gradient-to-br from-[#74602a] via-[#c5a059] to-[#b38b45] text-white font-semibold text-base sm:text-lg shadow-[0_10px_25px_rgba(197,160,89,0.3)] relative overflow-hidden transition-all duration-400 hover:-translate-y-[3px] hover:shadow-[0_15px_30px_rgba(197,160,89,0.5)] hover:brightness-105 disabled:opacity-85 disabled:cursor-not-allowed flex items-center justify-center"
+                        className="w-full h-[54px] md:h-[60px] rounded-[20px] md:rounded-[22px] bg-gradient-to-br from-[#74602a] via-[#c5a059] to-[#b38b45] text-white font-bold text-base md:text-lg shadow-[0_12px_28px_rgba(197,160,89,0.35)] relative overflow-hidden transition-all duration-300 hover:-translate-y-[4px] hover:shadow-[0_15px_35px_rgba(197,160,89,0.45)] active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center before:content-[''] before:absolute before:inset-[6px] before:border-[1.5px] before:border-dashed before:border-white/50 before:rounded-[16px] before:pointer-events-none before:transition-all before:duration-300 hover:before:border-white/90"
                       >
                         {loading ? (
-                          <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
+                          <span className="w-6 h-6 border-[3px] border-white/40 border-t-white rounded-full animate-spin inline-block" />
                         ) : (
                           "Continue"
                         )}
-                        <div className="absolute inset-[5px] border border-dashed border-white/40 rounded-[14px] sm:rounded-[16px] pointer-events-none" />
                       </button>
                     </div>
                   )}
 
                   {/* Step 3: Reset Password */}
                   {step === 3 && (
-                    <div className="animate-fadeIn space-y-3 sm:space-y-4">
+                    <div className="animate-fadeIn space-y-4 md:space-y-5">
                       <div>
-                        <div className="relative bg-white/50 border-[1.2px] border-dashed border-[#d6c8b8] rounded-[20px] sm:rounded-3xl h-12 sm:h-14 flex items-center px-4 sm:px-5 transition-all duration-300 focus-within:bg-white focus-within:border-solid focus-within:border-[#8a764d] focus-within:-translate-y-0.5">
+                        <div className="relative bg-white/60 border-[1.5px] border-dashed border-[#d6c8b8] rounded-[22px] md:rounded-[25px] h-[54px] md:h-[60px] flex items-center px-4 md:px-5 transition-all duration-300 focus-within:bg-white focus-within:border-solid focus-within:border-[#C5A059] focus-within:border-[2px] focus-within:-translate-y-[2px] focus-within:shadow-[0_0_0_4px_rgba(197,160,89,0.15)] after:content-[''] after:absolute after:inset-[5px] after:border after:border-dashed after:border-[rgba(214,200,184,0.4)] after:rounded-[18px] md:after:rounded-[21px] after:pointer-events-none" style={{ backgroundImage: 'radial-gradient(#efe6da 0.3px, transparent 0.3px)', backgroundSize: '3px 3px', boxShadow: '0 0 0 4px rgba(197, 160, 89, 0.05), inset 0 1px 3px rgba(0,0,0,0.02)' }}>
                           <LockIcon />
                           <input
                             type={showPassword ? "text" : "password"}
                             placeholder="New Password"
                             onChange={e => setPasswords({ ...passwords, new: e.target.value })}
                             autoComplete="new-password"
-                            className="bg-transparent border-none outline-none flex-1 px-2 sm:px-3 text-[#4A3C31] text-sm sm:text-base"
+                            className="bg-transparent border-none outline-none flex-1 px-3 text-[#4A3C31] text-sm md:text-base z-[2]"
                           />
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="bg-transparent border-none outline-none p-0 ml-1.5 flex items-center justify-center z-10 relative"
+                            className="bg-transparent border-none outline-none p-0 ml-1.5 flex items-center justify-center z-10 relative hover:scale-110 transition-transform"
                           >
                             <EyeIcon active={showPassword} />
                           </button>
-                          <div className="absolute inset-1 border border-dashed border-[#d6c8b8]/45 rounded-[16px] sm:rounded-[20px] pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
-                        <div className="relative bg-white/50 border-[1.2px] border-dashed border-[#d6c8b8] rounded-[20px] sm:rounded-3xl h-12 sm:h-14 flex items-center px-4 sm:px-5 transition-all duration-300 focus-within:bg-white focus-within:border-solid focus-within:border-[#8a764d] focus-within:-translate-y-0.5">
+                        <div className="relative bg-white/60 border-[1.5px] border-dashed border-[#d6c8b8] rounded-[22px] md:rounded-[25px] h-[54px] md:h-[60px] flex items-center px-4 md:px-5 transition-all duration-300 focus-within:bg-white focus-within:border-solid focus-within:border-[#C5A059] focus-within:border-[2px] focus-within:-translate-y-[2px] focus-within:shadow-[0_0_0_4px_rgba(197,160,89,0.15)] after:content-[''] after:absolute after:inset-[5px] after:border after:border-dashed after:border-[rgba(214,200,184,0.4)] after:rounded-[18px] md:after:rounded-[21px] after:pointer-events-none" style={{ backgroundImage: 'radial-gradient(#efe6da 0.3px, transparent 0.3px)', backgroundSize: '3px 3px', boxShadow: '0 0 0 4px rgba(197, 160, 89, 0.05), inset 0 1px 3px rgba(0,0,0,0.02)' }}>
                           <LockIcon />
                           <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Confirm New Password"
                             onChange={e => setPasswords({ ...passwords, confirm: e.target.value })}
                             autoComplete="new-password"
-                            className="bg-transparent border-none outline-none flex-1 px-2 sm:px-3 text-[#4A3C31] text-sm sm:text-base"
+                            className="bg-transparent border-none outline-none flex-1 px-3 text-[#4A3C31] text-sm md:text-base z-[2]"
                           />
-                          <div className="absolute inset-1 border border-dashed border-[#d6c8b8]/45 rounded-[16px] sm:rounded-[20px] pointer-events-none" />
                         </div>
                       </div>
 
@@ -388,25 +404,28 @@ const ForgotPassword: React.FC = () => {
                         type="button"
                         onClick={handleResetPassword}
                         disabled={loading}
-                        className="w-full h-12 sm:h-14 rounded-[18px] sm:rounded-[20px] bg-gradient-to-br from-[#74602a] via-[#c5a059] to-[#b38b45] text-white font-semibold text-base sm:text-lg shadow-[0_10px_25px_rgba(197,160,89,0.3)] relative overflow-hidden transition-all duration-400 hover:-translate-y-[3px] hover:shadow-[0_15px_30px_rgba(197,160,89,0.5)] hover:brightness-105 disabled:opacity-85 disabled:cursor-not-allowed flex items-center justify-center"
+                        className="w-full h-[54px] md:h-[60px] rounded-[20px] md:rounded-[22px] bg-gradient-to-br from-[#74602a] via-[#c5a059] to-[#b38b45] text-white font-bold text-base md:text-lg shadow-[0_12px_28px_rgba(197,160,89,0.35)] relative overflow-hidden transition-all duration-300 hover:-translate-y-[4px] hover:shadow-[0_15px_35px_rgba(197,160,89,0.45)] active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center before:content-[''] before:absolute before:inset-[6px] before:border-[1.5px] before:border-dashed before:border-white/50 before:rounded-[16px] before:pointer-events-none before:transition-all before:duration-300 hover:before:border-white/90"
                       >
                         {loading ? (
-                          <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
+                          <span className="w-6 h-6 border-[3px] border-white/40 border-t-white rounded-full animate-spin inline-block" />
                         ) : (
                           "Update Password"
                         )}
-                        <div className="absolute inset-[5px] border border-dashed border-white/40 rounded-[14px] sm:rounded-[16px] pointer-events-none" />
                       </button>
+                      <div className="flex items-center justify-center gap-2 mt-4 text-[10px] sm:text-xs text-[#7c6a5a]">
+                        <ShieldIcon />
+                        <span>Secured by 256-bit Encryption</span>
+                      </div>
                     </div>
                   )}
 
-                  <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-[#d6c8b8]/30 text-xs sm:text-sm text-[#7c6a5a]">
+                  <div className="mt-6 sm:mt-7 md:mt-8 pt-4 sm:pt-5 md:pt-6 border-t border-[#d6c8b8]/30 text-xs sm:text-sm text-[#7c6a5a]">
                     <span>
                       Remembered?{' '}
                       <button
                         type="button"
                         onClick={() => navigate("/login")}
-                        className="text-[#8a764d] font-semibold underline bg-transparent border-none cursor-pointer"
+                        className="text-[#8a764d] font-bold underline bg-transparent border-none cursor-pointer hover:text-[#C5A059] transition-colors"
                       >
                         Back to Login
                       </button>
@@ -414,22 +433,23 @@ const ForgotPassword: React.FC = () => {
                   </div>
                 </form>
 
-                <footer className="mt-6 sm:mt-8 text-[10px] sm:text-xs text-[#4A3C31] opacity-80">
-                  © Tailor Management System — Security Guaranteed.
+                <footer className="mt-6 sm:mt-7 md:mt-8 text-[10px] sm:text-xs text-[#4A3C31] opacity-70">
+                  © 2024 Tailor Management System — Security Guaranteed.
                 </footer>
               </div>
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
 // --- SVG Icons ---
 const CheckIcon: React.FC = () => (
-  <div className="w-8 h-8 rounded-xl bg-[#fdfbf7] border-[1.2px] border-dashed border-[#d6c8b8] flex items-center justify-center shadow-[0_4px_10px_rgba(93,74,59,0.08),inset_0_2px_3px_rgba(255,255,255,0.9),inset_0_-1px_2px_rgba(93,74,59,0.05)] transition-all duration-300 hover:scale-105 hover:border-solid hover:border-[#C5A059] hover:shadow-[0_6px_15px_rgba(197,160,89,0.2),inset_0_2px_3px_rgba(255,255,255,1)]">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5d4a3b" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+  <div className="w-8 h-8 md:w-9 md:h-9 rounded-[10px] flex items-center justify-center bg-gradient-to-br from-[#fdfbf7] to-[#f1e9df] border-[1.5px] border-dashed border-[#d6c8b8] relative overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.25,0.8,0.25,1)]" style={{ boxShadow: 'inset 0 2px 4px rgba(255, 255, 255, 0.8), 0 4px 12px rgba(197, 160, 89, 0.3), 0 2px 4px rgba(0, 0, 0, 0.05)' }}>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c6a5a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="20 6 9 17 4 12" />
     </svg>
   </div>
@@ -442,16 +462,22 @@ const MannequinIcon: React.FC = () => (
 );
 
 const MailIcon: React.FC = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a38b75" strokeWidth="1.5">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a38b75" strokeWidth="1.8" className="flex-shrink-0 z-[2]" style={{ filter: 'drop-shadow(0 1px 1px rgba(255,255,255,0.8))' }}>
     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
     <polyline points="22,6 12,13 2,6" />
   </svg>
 );
 
 const LockIcon: React.FC = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a38b75" strokeWidth="1.5">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a38b75" strokeWidth="1.8" className="flex-shrink-0 z-[2]" style={{ filter: 'drop-shadow(0 1px 1px rgba(255,255,255,0.8))' }}>
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+
+const ShieldIcon: React.FC = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
   </svg>
 );
 
@@ -466,7 +492,7 @@ const EyeIcon: React.FC<EyeIconProps> = ({ active }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="#a38b75"
-    strokeWidth="1.6"
+    strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
     className="transition-colors duration-300"

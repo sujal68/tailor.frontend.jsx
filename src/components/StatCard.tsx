@@ -1,6 +1,6 @@
 import React from 'react'; import { FiUsers } from "react-icons/fi"; import { FaRuler } from "react-icons/fa"; import { AiOutlineUser } from "react-icons/ai"; import { MdOutlineAccessTime } from "react-icons/md"; import { StatCardProps, StatTitle } from '../types';
 
-export default function StatCard({ image, alt, style }: StatCardProps): React.JSX.Element {
+export default function StatCard({ image, alt, style, subtitle, trend, trendDirection }: StatCardProps): React.JSX.Element {
     const theme: Record<StatTitle, { color: string; softBg: string }> = {
         "Total Tailor Shops": { color: "#213c58ff", softBg: "rgba(59,110,165,0.18)" },
         "Active Tailors": { color: "#29431fff", softBg: "rgba(106,143,91,0.18)" },
@@ -22,7 +22,7 @@ export default function StatCard({ image, alt, style }: StatCardProps): React.JS
                 onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
                 onMouseDown={(e: React.MouseEvent) => e.preventDefault()}
                 onDragStart={(e: React.DragEvent) => e.preventDefault()}
-                className="w-full h-full block select-none pointer-events-none object-cover"
+                className="w-full h-full block select-none pointer-events-none object-cover scale-[1.15]"
             />
             <div className="absolute inset-0 flex flex-col justify-center pointer-events-none text-[#111111dd] font-['Inter',sans-serif] tracking-[0.3px]" style={{ padding: 'clamp(12px, 3vw, 22px)' }}>
 
@@ -31,7 +31,7 @@ export default function StatCard({ image, alt, style }: StatCardProps): React.JS
                     style={{
                         color: current.color,
                         background: current.softBg,
-                        fontSize: 'clamp(20px, 5vw, 10px)',
+                        fontSize: 'clamp(20px, 5vw, 25px)',
                         padding: 'clamp(6px, 1.5vw, 14px) clamp(8px, 2vw, 16px)',
                         borderRadius: 'clamp(10px, 2vw, 18px)',
                         marginTop: 'clamp(2px, 0.5vw, 4px)'
@@ -53,7 +53,26 @@ export default function StatCard({ image, alt, style }: StatCardProps): React.JS
                     {alt === "Total Invoices Generated" && "215"}
                 </div>
 
-                <div className="mt-1 opacity-90" style={{ fontSize: 'clamp(11px, 2.5vw, 18px)' }}>{alt}</div>
+                <div className="mt-1 opacity-90" style={{ fontSize: 'clamp(11px, 2.5vw, 18px)' }}>
+                    {alt === "Total Invoices Generated" ? "Total Invoices" : alt}
+                </div>
+                
+                {subtitle && (
+                    <div className="mt-0.5 opacity-60" style={{ fontSize: 'clamp(9px, 2vw, 12px)' }}>
+                        {subtitle}
+                    </div>
+                )}
+
+                {trend && (
+                    <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-md bg-white/40 backdrop-blur-sm border border-dashed border-white/60" style={{ fontSize: 'clamp(9px, 2vw, 11px)' }}>
+                        {trendDirection === 'up' && <span className="text-green-600">↑</span>}
+                        {trendDirection === 'down' && <span className="text-red-600">↓</span>}
+                        {trendDirection === 'stable' && <span className="text-gray-600">—</span>}
+                        <span className={trendDirection === 'up' ? 'text-green-600' : trendDirection === 'down' ? 'text-red-600' : 'text-gray-600'}>
+                            {trend}
+                        </span>
+                    </div>
+                )}
             </div>
         </div>
     );

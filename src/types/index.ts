@@ -43,6 +43,9 @@ export interface StatCardProps {
   image: string;
   alt: StatTitle;
   style?: React.CSSProperties;
+  subtitle?: string;
+  trend?: string;
+  trendDirection?: 'up' | 'down' | 'stable';
 }
 
 export interface GlobalFiltersProps {

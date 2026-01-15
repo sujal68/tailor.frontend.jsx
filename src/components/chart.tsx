@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { ChartData } from '../types';
 
@@ -33,7 +33,7 @@ export default function CustomerGrowthChart(): React.JSX.Element {
     return (
         <div className="w-full flex justify-center mt-5 font-['Poppins',_sans-serif] [&_.recharts-wrapper_*]:focus:outline-none [&_.recharts-surface]:outline-none [&_svg:focus]:outline-none">
             <div className="w-full bg-[linear-gradient(rgb(255_255_255_/_61%),_rgb(255_255_255_/_7%))] backdrop-blur-[12px] rounded-[20px] sm:rounded-[26px] pt-[14px] sm:pt-[16px] pr-[16px] sm:pr-[32px] sm:pb-[15px] pl-[4px] sm:pl-[6px] shadow-[0_20px_40px_rgba(0,0,0,0.06),_inset_0_1px_1px_rgba(255,255,255,0.6)] border border-[rgba(255,255,255,0.35)]">
-                <div className="flex justify-between items-center mb-[18px] sm:mb-[21px] ml-[20px] sm:ml-[30px] mr-[10px] sm:mr-[20px]">
+                <div className="flex justify-between items-center mb-[18px] sm:mb-[21px] ml-5">
                     <div>
                         <h3 className="text-[16px] sm:text-[18px] font-semibold tracking-wide text-[rgb(111,91,62)] opacity-90 font-['Poppins',_sans-serif]">
                             Monthly Growth Overview
@@ -42,7 +42,8 @@ export default function CustomerGrowthChart(): React.JSX.Element {
                             Revenue & Total Customers (All Shops)
                         </p>
                     </div>
-                    <div className="flex gap-2">
+                    {/* Desktop: Show all buttons */}
+                    <div className="hidden min-[1400px]:flex gap-2">
                         {['Year', 'Q1', 'Q2', 'Q3', 'Q4'].map((item) => (
                             <button
                                 key={item}
@@ -56,6 +57,9 @@ export default function CustomerGrowthChart(): React.JSX.Element {
                             </button>
                         ))}
                     </div>
+
+                    {/* Mobile: Dropdown menu */}
+                    <FilterDropdown filter={filter} setFilter={setFilter} />
                 </div>
 
                 <ResponsiveContainer width="105%" height={200}>
@@ -158,6 +162,53 @@ export default function CustomerGrowthChart(): React.JSX.Element {
                     </AreaChart>
                 </ResponsiveContainer>
             </div>
+        </div>
+    );
+}
+
+function FilterDropdown({ filter, setFilter }: { filter: string; setFilter: (f: string) => void }): React.JSX.Element {
+    const [open, setOpen] = useState<boolean>(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const close = (e: MouseEvent): void => {
+            if (!ref.current?.contains(e.target as Node)) {
+                setOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", close);
+        return () => document.removeEventListener("mousedown", close);
+    }, []);
+
+    return (
+        <div ref={ref} className="relative min-[1400px]:hidden">
+            <button
+                onClick={() => setOpen(!open)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-[#6f5b3e] text-white rounded-lg shadow-md text-[11px] font-light tracking-wide"
+            >
+                <span>{filter}</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`transition-transform ${open ? 'rotate-180' : ''}`}>
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            </button>
+
+            {open && (
+                <div className="absolute top-full right-0 mt-2 min-w-[100px] rounded-lg p-1.5 bg-white/95 backdrop-blur-md border border-white/40 shadow-lg z-50">
+                    {['Year', 'Q1', 'Q2', 'Q3', 'Q4'].map((item) => (
+                        <div
+                            key={item}
+                            onClick={() => { setFilter(item); setOpen(false); }}
+                            className={`px-3 py-2 text-[11px] rounded-md cursor-pointer transition-all ${
+                                filter === item
+                                    ? 'bg-[#6f5b3e] text-white'
+                                    : 'text-[#6f5b3e] hover:bg-white/60'
+                            }`}
+                        >
+                            {item}
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

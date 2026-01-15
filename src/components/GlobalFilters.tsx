@@ -59,7 +59,7 @@ export default function GlobalFilters({ filters, setFilters }: GlobalFiltersProp
             </div>
 
             {/* Desktop: Original layout */}
-            <div className="hidden lg:flex flex-wrap md:flex-nowrap gap-[18px] p-[14px_18px] rounded-[16px] bg-[linear-gradient(180deg,#ffffff9a_0%,#ffffff4f_100%)] border border-[#e3dbd0]">
+            <div className="hidden lg:flex flex-wrap md:flex-nowrap gap-[18px] min-[1300px]:gap-[18px] gap-[12px] p-[14px_18px] min-[1300px]:p-[14px_18px] p-[10px_12px] rounded-[16px] bg-[linear-gradient(180deg,#ffffff9a_0%,#ffffff4f_100%)] border border-[#e3dbd0]">
                 <PremiumSelect
                     label="Date Range"
                     value={filters.dateRange}
@@ -190,12 +190,12 @@ function PremiumSelect({ label, value, onChange, options }: PremiumSelectProps):
     const selected = options.find(o => o.value === value)?.label;
 
     return (
-        <div ref={ref} className="relative flex flex-col gap-[6px]">
-            <label className="text-[12px] text-[#8f8579] font-medium font-[Inter]">{label}</label>
+        <div ref={ref} className="relative flex flex-col gap-[6px] min-[1300px]:gap-[6px] gap-[4px]">
+            <label className="text-[12px] min-[1300px]:text-[12px] text-[10px] text-[#8f8579] font-medium font-[Inter]">{label}</label>
 
             <div
                 onClick={() => setOpen(!open)}
-                className="flex items-center justify-between px-[14px] py-[10px] rounded-[14px] border border-[rgba(255,255,255,0.45)] bg-[rgba(255,255,255,0.55)] backdrop-blur-[12px] text-[13px] font-[Inter] text-[#5d4a3b] cursor-pointer shadow-[0_10px_25px_rgba(0,0,0,0.12)] min-w-[150px]"
+                className="flex items-center justify-between px-[14px] min-[1300px]:px-[14px] px-[10px] py-[10px] min-[1300px]:py-[10px] py-[8px] rounded-[14px] border border-[rgba(255,255,255,0.45)] bg-[rgba(255,255,255,0.55)] backdrop-blur-[12px] text-[13px] min-[1300px]:text-[13px] text-[11px] font-[Inter] text-[#5d4a3b] cursor-pointer shadow-[0_10px_25px_rgba(0,0,0,0.12)] min-w-[150px] min-[1300px]:min-w-[150px] min-w-[120px]"
             >
                 <span>{selected}</span>
                 <span className={`text-[12px] text-[#8b7a63] transition-all duration-[250ms] ${open ? "rotate-180" : "rotate-0"}`}>▾</span>
