@@ -1,5 +1,6 @@
 import React from 'react';
-import { X, Mail, Phone, MapPin, Calendar, Users, ShoppingBag, TrendingUp, Award } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Mail, Phone, MapPin, Calendar, Users, ShoppingBag, TrendingUp, Award, ExternalLink, MessageSquare } from 'lucide-react';
 
 interface TailorDetailSidebarProps {
   isOpen: boolean;
@@ -17,124 +18,172 @@ interface TailorDetailSidebarProps {
   } | null;
 }
 
+// Animated Icon Wrapper Component
+const AnimatedIcon = ({ children, color = "#8a7b6a" }: { children: React.ReactNode, color?: string }) => (
+  <motion.div
+    whileHover={{ scale: 1.2, rotate: 5 }}
+    className="p-2 rounded-lg bg-white/50 shadow-sm flex items-center justify-center"
+    style={{ color }}
+  >
+    {children}
+  </motion.div>
+);
+
 const TailorDetailSidebar: React.FC<TailorDetailSidebarProps> = ({ isOpen, onClose, tailor }) => {
   if (!tailor) return null;
 
   return (
-    <>
-      {/* Overlay */}
-      <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        onClick={onClose}
-      />
-
-      {/* Sidebar */}
-      <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-[420px] md:w-[480px] bg-gradient-to-br from-[#fdfbf7] to-[#f5ede3] shadow-[-10px_0_40px_rgba(0,0,0,0.15)] z-50 transition-transform duration-300 ease-out overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
-      >
-        {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[#8a7b6a] to-[#6f5b3e] p-4 sm:p-5 md:p-6 flex items-center justify-between shadow-lg z-10">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white font-['Poppins',sans-serif]">Tailor Details</h2>
-          <button
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop with Blur */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-all active:scale-95"
+            className="fixed inset-0 bg-black/30 backdrop-blur-md z-[55]"
+          />
+
+          {/* Premium Sidebar */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed top-0 right-0 h-full w-full sm:w-[440px] bg-[#fcfaf7] z-[60] shadow-[-20px_0_50px_rgba(0,0,0,0.1)] flex flex-col border-l border-[#eaddcf]"
           >
-            <X size={18} className="text-white sm:w-5 sm:h-5" />
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="p-3 sm:p-4 md:p-5 space-y-3 sm:space-y-4 md:space-y-5">
-          {/* Profile Section */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-[14px] sm:rounded-[16px] md:rounded-[20px] p-3 sm:p-4 md:p-5 border border-white/80 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-            <div className="flex flex-col items-center text-center">
-              <div className="relative mb-2 sm:mb-3">
-                <img
-                  src={tailor.img}
-                  alt={tailor.name}
-                  className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full border-2 sm:border-3 md:border-4 border-white shadow-lg object-cover"
-                />
-                <div className={`absolute bottom-0 right-0 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full border-2 border-white ${tailor.status === 'active' ? 'bg-[#3f7f5a]' : tailor.status === 'pending' ? 'bg-[#b88924]' : 'bg-[#a64444]'}`} />
-              </div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#4e463e] mb-0.5 sm:mb-1">{tailor.name}</h3>
-              <p className="text-[11px] sm:text-xs md:text-sm text-[#8b7a63] mb-2">Owner: {tailor.owner}</p>
-              <span className={`px-2.5 sm:px-3 md:px-4 py-1 rounded-full text-[9px] sm:text-[10px] md:text-xs font-semibold uppercase tracking-wide ${tailor.status === 'active' ? 'bg-[#e7f3ed] text-[#2f6f53]' : tailor.status === 'pending' ? 'bg-[#fff2db] text-[#b88924]' : 'bg-[#fdeaea] text-[#a64444]'}`}>
-                {tailor.status}
-              </span>
-            </div>
-          </div>
-
-          {/* Contact Info */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-[14px] sm:rounded-[16px] md:rounded-[20px] p-3 sm:p-4 md:p-5 border border-white/80 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-            <h4 className="text-sm sm:text-base md:text-lg font-semibold text-[#4e463e] mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-              <Mail size={14} className="text-[#8a7b6a] sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" />
-              Contact Information
-            </h4>
-            <div className="space-y-2 sm:space-y-2.5">
-              <div className="flex items-center gap-2 text-[11px] sm:text-xs md:text-sm">
-                <Phone size={13} className="text-[#8b7a63] sm:w-[14px] sm:h-[14px] md:w-4 md:h-4" />
-                <span className="text-[#5c5247]">+91 98765-43210</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px] sm:text-xs md:text-sm">
-                <Mail size={13} className="text-[#8b7a63] sm:w-[14px] sm:h-[14px] md:w-4 md:h-4" />
-                <span className="text-[#5c5247]">{tailor.name.toLowerCase().replace(/\s+/g, '')}@gmail.com</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px] sm:text-xs md:text-sm">
-                <MapPin size={13} className="text-[#8b7a63] sm:w-[14px] sm:h-[14px] md:w-4 md:h-4" />
-                <span className="text-[#5c5247]">{tailor.city}, India</span>
-              </div>
-              {tailor.joined && (
-                <div className="flex items-center gap-2 text-[11px] sm:text-xs md:text-sm">
-                  <Calendar size={13} className="text-[#8b7a63] sm:w-[14px] sm:h-[14px] md:w-4 md:h-4" />
-                  <span className="text-[#5c5247]">Joined {tailor.joined}</span>
+            {/* Custom Stitching Header */}
+            <div className="relative p-8 bg-[#8a7b6a] text-white overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 border-t-2 border-dashed border-white/30" />
+              <div className="relative z-10 flex justify-between items-center">
+                <div>
+                  <h2 className="text-2xl font-serif font-bold tracking-tight">Tailor Profile</h2>
+                  <p className="text-white/70 text-sm italic">Mastering the Art of Fit</p>
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Business Stats */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-[14px] sm:rounded-[16px] md:rounded-[20px] p-3 sm:p-4 md:p-5 border border-white/80 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-            <h4 className="text-sm sm:text-base md:text-lg font-semibold text-[#4e463e] mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
-              <TrendingUp size={14} className="text-[#8a7b6a] sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" />
-              Business Metrics
-            </h4>
-            <div className="grid grid-cols-2 gap-2 sm:gap-3">
-              <div className="bg-gradient-to-br from-[#e7f3ed] to-[#d4e8dc] rounded-[10px] sm:rounded-[12px] md:rounded-[14px] p-2.5 sm:p-3 md:p-4 border border-[#3f7f5a]/20">
-                <div className="flex items-center gap-1 sm:gap-1.5 mb-1 sm:mb-1.5">
-                  <Users size={13} className="text-[#3f7f5a] sm:w-[14px] sm:h-[14px] md:w-4 md:h-4" />
-                  <span className="text-[9px] sm:text-[10px] md:text-xs text-[#3f7f5a] font-medium">Customers</span>
-                </div>
-                <p className="text-lg sm:text-xl md:text-2xl font-bold text-[#2f6f53]">{tailor.customers}</p>
+                <motion.button
+                  whileHover={{ rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={onClose}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                >
+                  <X size={24} />
+                </motion.button>
               </div>
-              <div className="bg-gradient-to-br from-[#fff2db] to-[#f5e8c8] rounded-[10px] sm:rounded-[12px] md:rounded-[14px] p-2.5 sm:p-3 md:p-4 border border-[#b88924]/20">
-                <div className="flex items-center gap-1 sm:gap-1.5 mb-1 sm:mb-1.5">
-                  <ShoppingBag size={13} className="text-[#b88924] sm:w-[14px] sm:h-[14px] md:w-4 md:h-4" />
-                  <span className="text-[9px] sm:text-[10px] md:text-xs text-[#b88924] font-medium">Orders</span>
-                </div>
-                <p className="text-lg sm:text-xl md:text-2xl font-bold text-[#9a7420]">{tailor.orders}</p>
-              </div>
-              <div className="col-span-2 bg-gradient-to-br from-[#e8ddd0] to-[#d9cec1] rounded-[10px] sm:rounded-[12px] md:rounded-[14px] p-2.5 sm:p-3 md:p-4 border border-[#8a7b6a]/30">
-                <div className="flex items-center gap-1 sm:gap-1.5 mb-1 sm:mb-1.5">
-                  <Award size={13} className="text-[#6f5b3e] sm:w-[14px] sm:h-[14px] md:w-4 md:h-4" />
-                  <span className="text-[9px] sm:text-[10px] md:text-xs text-[#6f5b3e] font-medium">Total Revenue</span>
-                </div>
-                <p className="text-lg sm:text-xl md:text-2xl font-bold text-[#5c4d3f]">₹{tailor.revenue.toLocaleString()}</p>
+              {/* Decorative SVG Pattern */}
+              <div className="absolute -right-4 -bottom-4 opacity-10">
+                <ShoppingBag size={120} />
               </div>
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="space-y-2 sm:space-y-2.5">
-            <button className="w-full py-2 sm:py-2.5 md:py-3 rounded-[10px] sm:rounded-[12px] md:rounded-[14px] bg-gradient-to-r from-[#8a7b6a] to-[#6f5b3e] text-white text-xs sm:text-sm md:text-base font-semibold shadow-[0_6px_20px_rgba(138,123,106,0.4)] hover:shadow-[0_8px_24px_rgba(138,123,106,0.5)] hover:-translate-y-0.5 transition-all active:scale-98">
-              View Full Profile
-            </button>
-            <button className="w-full py-2 sm:py-2.5 md:py-3 rounded-[10px] sm:rounded-[12px] md:rounded-[14px] bg-white/70 border border-[#8a7b6a]/30 text-[#6f5b3e] text-xs sm:text-sm md:text-base font-semibold hover:bg-white hover:border-[#8a7b6a] transition-all active:scale-98">
-              Send Message
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+
+              {/* Profile Card with Animated Hover */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-3xl p-6 shadow-[0_10px_30px_rgba(138,123,106,0.1)] border border-[#eaddcf] relative overflow-hidden group"
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 bg-[#f8f5f2] rounded-bl-full -z-0 transition-all group-hover:scale-110" />
+
+                <div className="relative z-10 flex flex-col items-center">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="relative mb-4"
+                  >
+                    <img
+                      src={tailor.img}
+                      alt={tailor.name}
+                      className="w-28 h-28 rounded-2xl object-cover ring-4 ring-[#f8f5f2] shadow-xl"
+                    />
+                    <div className={`absolute -bottom-2 -right-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-white shadow-lg ${tailor.status === 'active' ? 'bg-emerald-500' : 'bg-amber-500'}`}>
+                      {tailor.status}
+                    </div>
+                  </motion.div>
+
+                  <h3 className="text-2xl font-bold text-[#4a3f35]">{tailor.name}</h3>
+                  <div className="flex items-center gap-2 text-[#8a7b6a] mt-1">
+                    <span className="text-sm font-medium">Lead Designer: {tailor.owner}</span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Stats Grid - Premium Cards */}
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: <Users size={18} />, label: 'Clients', value: tailor.customers, color: '#5d8a6a' },
+                  { icon: <ShoppingBag size={18} />, label: 'Orders', value: tailor.orders, color: '#b88924' }
+                ].map((stat, i) => (
+                  <motion.div
+                    key={i}
+                    whileHover={{ y: -5 }}
+                    className="bg-white p-4 rounded-2xl border border-[#eaddcf] shadow-sm flex flex-col items-center"
+                  >
+                    <AnimatedIcon color={stat.color}>{stat.icon}</AnimatedIcon>
+                    <span className="text-xs text-[#8a7b6a] mt-2 uppercase tracking-tighter font-bold">{stat.label}</span>
+                    <span className="text-xl font-bold text-[#4a3f35]">{stat.value}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Contact Section with "Stitched" border */}
+              <div className="bg-[#fcfaf7] border-2 border-dashed border-[#eaddcf] rounded-2xl p-5 space-y-4">
+                <h4 className="text-xs font-bold text-[#8a7b6a] uppercase tracking-[0.2em] mb-4">Registry Information</h4>
+
+                <div className="space-y-3">
+                  {[
+                    { icon: <Phone size={16} />, text: '+91 98765-43210' },
+                    { icon: <Mail size={16} />, text: `${tailor.name.split(' ')[0].toLowerCase()}@atelier.com` },
+                    { icon: <MapPin size={16} />, text: `${tailor.city}, India` },
+                    { icon: <Calendar size={16} />, text: `Member since ${tailor.joined || '2023'}` }
+                  ].map((item, idx) => (
+                    <motion.div
+                      key={idx}
+                      whileHover={{ x: 5 }}
+                      className="flex items-center gap-3 text-sm text-[#5c5247]"
+                    >
+                      <span className="text-[#8a7b6a]">{item.icon}</span>
+                      {item.text}
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Revenue Highlight */}
+              <div className="bg-[#4a3f35] rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
+                <div className="relative z-10 flex justify-between items-center">
+                  <div>
+                    <p className="text-white/60 text-[10px] uppercase font-bold tracking-widest">Total Valuation</p>
+                    <h4 className="text-2xl font-bold">₹{tailor.revenue.toLocaleString()}</h4>
+                  </div>
+                  <TrendingUp className="text-emerald-400" size={32} />
+                </div>
+                {/* Abstract Line Pattern */}
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="grid grid-cols-1 gap-3 pt-4">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-4 bg-[#8a7b6a] text-white rounded-xl font-bold shadow-xl shadow-[#8a7b6a]/20 flex items-center justify-center gap-2"
+                >
+                  <ExternalLink size={18} /> View Portfolio
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02, backgroundColor: '#fdfbf9' }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-4 border-2 border-[#8a7b6a] text-[#8a7b6a] rounded-xl font-bold flex items-center justify-center gap-2"
+                >
+                  <MessageSquare size={18} /> Contact Business
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
 

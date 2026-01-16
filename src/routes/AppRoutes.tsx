@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
@@ -12,7 +12,12 @@ import Customers from "../pages/Customers";
 import AdminLayout from "../layouts/AdminLayout";
 import Profile from "../pages/Profile";
 
-export default function AppRoutes(): React.JSX.Element {
+interface AppRoutesProps {
+    onTriggerLoader: () => void;
+    onLoaderComplete: () => void;
+}
+
+export default function AppRoutes({ onTriggerLoader, onLoaderComplete }: AppRoutesProps): React.JSX.Element {
     return (
         <Routes>
 
@@ -22,7 +27,7 @@ export default function AppRoutes(): React.JSX.Element {
                 path="/"
                 element={
                     <PublicRoute>
-                        <Login />
+                        <Login onTriggerLoader={onTriggerLoader} onLoaderComplete={onLoaderComplete} />
                     </PublicRoute>
                 }
             />
@@ -31,7 +36,7 @@ export default function AppRoutes(): React.JSX.Element {
                 path="/login"
                 element={
                     <PublicRoute>
-                        <Login />
+                        <Login onTriggerLoader={onTriggerLoader} onLoaderComplete={onLoaderComplete} />
                     </PublicRoute>
                 }
             />

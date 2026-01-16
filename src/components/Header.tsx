@@ -60,8 +60,12 @@ const Header: React.FC<HeaderProps> = ({ setSidebarOpen }) => {
     <div className="flex-1 max-w-[280px] sm:max-w-[350px] lg:max-w-[450px] relative mr-2 md:mr-5 hidden sm:block">
       <div className="absolute left-4 top-1/2 -translate-y-1/2 opacity-50">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9e8c76" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          <circle cx="11" cy="11" r="8">
+            <animate attributeName="r" values="8;8.5;8" dur="2s" repeatCount="indefinite" />
+          </circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65">
+            <animate attributeName="stroke-dasharray" values="0 10;10 0" dur="1.5s" repeatCount="indefinite" />
+          </line>
         </svg>
       </div>
       <input
@@ -82,8 +86,12 @@ const Header: React.FC<HeaderProps> = ({ setSidebarOpen }) => {
           <span className="text-[9px] sm:text-[10px] font-bold text-white">{unreadCount}</span>
         </div>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a3f35" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[18px] sm:h-[18px]">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9">
+              <animate attributeName="d" values="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9;M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9;M18 9A6 6 0 0 0 6 9c0 7-3 9-3 9h18s-3-2-3-9;M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" dur="2s" repeatCount="indefinite" />
+            </path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0">
+              <animateTransform attributeName="transform" type="rotate" values="0 12 21;-10 12 21;10 12 21;0 12 21" dur="1s" repeatCount="indefinite" />
+            </path>
           </svg>
         </button>
 
@@ -155,11 +163,24 @@ const Header: React.FC<HeaderProps> = ({ setSidebarOpen }) => {
             }`}
         >
           <div className="flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm text-[#5c5247] cursor-pointer transition-all duration-200 hover:bg-white/55 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35)]">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2">
+                <animate attributeName="stroke-dasharray" values="0 30;30 0" dur="2s" repeatCount="indefinite" />
+              </path>
+              <circle cx="12" cy="7" r="4">
+                <animate attributeName="r" values="4;4.3;4" dur="1.5s" repeatCount="indefinite" />
+              </circle>
+            </svg>
             Profile
           </div>
           <div className="flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm text-[#5c5247] cursor-pointer transition-all duration-200 hover:bg-white/55 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35)]">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <g>
+                <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="8s" repeatCount="indefinite" />
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </g>
+            </svg>
             Settings
           </div>
           <div className="flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm text-[#5c5247] border-t border-[#f0ede7] mt-1 cursor-default">
@@ -172,7 +193,15 @@ const Header: React.FC<HeaderProps> = ({ setSidebarOpen }) => {
             className="flex items-center gap-3 px-4 py-3 rounded-[14px] text-sm text-[#c27d7d] cursor-pointer transition-all duration-200 hover:bg-white/55 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.35)]"
             onClick={handleLogout}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7">
+                <animate attributeName="points" values="16 17 21 12 16 7;17 17 22 12 17 7;16 17 21 12 16 7" dur="1.5s" repeatCount="indefinite" />
+              </polyline>
+              <line x1="21" y1="12" x2="9" y2="12">
+                <animate attributeName="stroke-dasharray" values="0 20;20 0" dur="2s" repeatCount="indefinite" />
+              </line>
+            </svg>
             Logout
           </div>
         </div>

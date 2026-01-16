@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppRoutes from './routes/AppRoutes';
 import { Toaster } from "react-hot-toast";
+import Loader from './components/Loader';
 
 export default function App(): React.JSX.Element {
+  const [showLoader, setShowLoader] = useState<boolean>(false);
+
   return (
     <>
-      <AppRoutes />
+      <Loader show={showLoader} />
+      <AppRoutes onTriggerLoader={() => setShowLoader(true)} onLoaderComplete={() => setShowLoader(false)} />
 
       <Toaster
         position="top-right"

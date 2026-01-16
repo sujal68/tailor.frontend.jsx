@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; import { Eye, Edit2, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react'; import { ChevronLeft, ChevronRight } from 'lucide-react';
 import TailorDetailSidebar from './TailorDetailSidebar';
 
 interface TailorShop { id: number; name: string; owner: string; city: string; customers: number; orders: number; revenue: number; status: string; img: string; joined?: string; }
@@ -33,7 +33,32 @@ const Table: React.FC = () => {
           <td className="px-2 sm:px-3.5 py-2 sm:py-3 text-[0.78rem] sm:text-[0.85rem] border-b border-[#e3dbd0] hidden md:table-cell">{c.city}</td>
           {view === 'all' ? (<><td className="px-2 sm:px-3.5 py-2 sm:py-3 text-[0.78rem] sm:text-[0.85rem] border-b border-[#e3dbd0]">{c.customers}</td><td className="px-2 sm:px-3.5 py-2 sm:py-3 text-[0.78rem] sm:text-[0.85rem] border-b border-[#e3dbd0]">{c.orders}</td><td className="px-2 sm:px-3.5 py-2 sm:py-3 text-[0.78rem] sm:text-[0.85rem] border-b border-[#e3dbd0]">₹{c.revenue.toLocaleString()}</td></>) : (<td className="px-2 sm:px-3.5 py-2 sm:py-3 text-[0.78rem] sm:text-[0.85rem] border-b border-[#e3dbd0] whitespace-nowrap">{c.joined}</td>)}
           <td className="px-2 sm:px-3.5 py-2 sm:py-3 text-[0.78rem] sm:text-[0.85rem] border-b border-[#e3dbd0]"><span className={`px-1.5 sm:px-2 py-[3px] rounded-md text-[0.65rem] sm:text-[0.7rem] font-semibold capitalize border border-dashed whitespace-nowrap ${c.status === 'active' ? 'bg-[#e7f3ed] text-[#2f6f53] border-[#2f6f53]/30' : c.status === 'pending' ? 'bg-[#fff2db] text-[#b88924] border-[#b88924]/30' : 'bg-[#fdeaea] text-[#a64444] border-[#a64444]/30'}`}>{c.status}</span></td>
-          <td className="px-2 sm:px-3.5 py-2 sm:py-3 text-[0.78rem] sm:text-[0.85rem] border-b border-[#e3dbd0]"><div className="flex gap-2 sm:gap-2.5 text-[#8a7b6a] opacity-60 group-hover:opacity-100 transition-opacity"><Eye size={14} className="cursor-pointer sm:w-4 sm:h-4 hover:text-[#6f5b3e]" onClick={() => handleViewDetails(c)} /><Edit2 size={13} className="cursor-pointer sm:w-[14px] sm:h-[14px] hover:text-[#6f5b3e]" /><Trash2 size={13} className="cursor-pointer sm:w-[14px] sm:h-[14px] hover:text-[#6f5b3e]" /></div></td>
+          <td className="px-2 sm:px-3.5 py-2 sm:py-3 text-[0.78rem] sm:text-[0.85rem] border-b border-[#e3dbd0]"><div className="flex gap-2 sm:gap-2.5 text-[#8a7b6a] opacity-60 group-hover:opacity-100 transition-opacity">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="cursor-pointer sm:w-4 sm:h-4 hover:stroke-[#6f5b3e]" onClick={() => handleViewDetails(c)}>
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                <animate attributeName="stroke-dasharray" values="0 50;50 0" dur="2s" repeatCount="indefinite" />
+              </path>
+              <circle cx="12" cy="12" r="3">
+                <animate attributeName="r" values="3;3.5;3" dur="1.5s" repeatCount="indefinite" />
+              </circle>
+            </svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="cursor-pointer sm:w-[14px] sm:h-[14px] hover:stroke-[#6f5b3e]">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
+                <animate attributeName="stroke-dasharray" values="0 60;60 0" dur="2.5s" repeatCount="indefinite" />
+              </path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
+                <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" />
+              </path>
+            </svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="cursor-pointer sm:w-[14px] sm:h-[14px] hover:stroke-[#6f5b3e]">
+              <polyline points="3 6 5 6 21 6">
+                <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
+              </polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                <animate attributeName="stroke-dasharray" values="0 80;80 0" dur="3s" repeatCount="indefinite" />
+              </path>
+            </svg>
+          </div></td>
         </tr>
       ))}
     </tbody></table></div>

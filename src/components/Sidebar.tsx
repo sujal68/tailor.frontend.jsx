@@ -14,7 +14,11 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth < 768) {
+        setIsCollapsed(false);
+      } else if (window.innerWidth < 1300) {
+        setIsCollapsed(true);
+      } else {
         setIsCollapsed(false);
       }
     };
@@ -22,6 +26,14 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (isCollapsed) {
+      document.body.classList.add('sidebar-collapsed');
+    } else {
+      document.body.classList.remove('sidebar-collapsed');
+    }
+  }, [isCollapsed]);
 
   const navItems = [
     { name: 'Dashboard', icon: <HomeIcon />, path: '/dashboard' },
@@ -142,9 +154,9 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
       <div
         className={`
-          fixed md:sticky top-0 left-0 h-[100dvh] z-[50] box-border
+          fixed md:sticky top-0 left-0 h-[100dvh] z-[46] md:z-[30] box-border
           transition-all duration-[450ms] ease-[cubic-bezier(0.19,1,0.22,1)]
-          ${isCollapsed ? 'w-[110px]' : 'w-80'}
+          ${isCollapsed ? 'w-[140px]' : 'w-80'}
           ${sidebarOpen ? 'translate-x-0' : 'max-md:-translate-x-full'}
           p-3 md:p-4
         `}
@@ -175,11 +187,11 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                       group flex items-center gap-4 p-3.5 rounded-[18px] transition-all duration-300 w-full text-left relative
                       ${activeItem === item.name || openMenu === item.name 
                         ? 'bg-[#e8dfd29e] text-[#5d4a3b] shadow-[inset_0_1px_2px_rgba(108,108,108,0.1)]' 
-                        : 'text-[#7c6a5a] hover:bg-[rgba(232,223,210,0.3)] hover:text-[#5d4a3b]'}
+                        : 'text-[#7c6a5a] hover:bg-[rgba(232,223,210,0.3)] hover:text-[#5d4a3b] hover:shadow-sm'}
                       ${isCollapsed ? 'justify-center px-0' : ''}
                     `}
                   >
-                    <span className={`flex items-center justify-center min-w-[24px] transition-transform duration-300 group-hover:scale-110 ${activeItem === item.name ? 'scale-110' : ''}`}>
+                    <span className={`flex items-center justify-center min-w-[24px] transition-all duration-300 group-hover:scale-110 ${activeItem === item.name ? 'scale-110 drop-shadow-[0_2px_4px_rgba(93,74,59,0.3)]' : ''}`}>
                       {item.icon}
                     </span>
                     
@@ -193,7 +205,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                     )}
 
                     {activeItem === item.name && (
-                      <div className="absolute left-0 w-1 h-5 bg-[#8b735b] rounded-r-full" />
+                      <div className="absolute left-0 w-1 h-5 bg-[#8b735b] rounded-r-full shadow-[0_0_8px_rgba(139,115,91,0.5)]" />
                     )}
                   </button>
 
@@ -233,11 +245,11 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                       onClick={() => handleItemClick(item)}
                       className={`
                         group flex items-center gap-4 p-3.5 rounded-[18px] transition-all duration-300 w-full text-left
-                        ${activeItem === item.name ? 'bg-[#e8dfd29e] text-[#5d4a3b]' : 'text-[#7c6a5a] hover:bg-[rgba(232,223,210,0.3)]'}
+                        ${activeItem === item.name ? 'bg-[#e8dfd29e] text-[#5d4a3b]' : 'text-[#7c6a5a] hover:bg-[rgba(232,223,210,0.3)] hover:shadow-sm'}
                         ${isCollapsed ? 'justify-center px-0' : ''}
                       `}
                     >
-                      <span className="flex items-center justify-center min-w-[24px] group-hover:scale-110 transition-transform">
+                      <span className="flex items-center justify-center min-w-[24px] group-hover:scale-110 transition-all duration-300">
                         {item.icon}
                       </span>
                       {!isCollapsed && <span className="text-[14.5px] font-medium">{item.name}</span>}
@@ -280,7 +292,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
           {/* Desktop Toggle */}
           <button
-            className="hidden md:flex absolute top-[28px] -right-[-12px] w-8 h-8 rounded-full bg-[#fdfaf5] border border-[#d6c8b8] shadow-md items-center justify-center cursor-pointer z-[60] transition-all hover:scale-110 active:scale-90"
+            className="hidden md:flex absolute top-[28px] -right-[-12px] w-8 h-8 rounded-full bg-[#fdfaf5] border border-[#d6c8b8] shadow-md items-center justify-center cursor-pointer z-[5] transition-all hover:scale-110 active:scale-90"
             onClick={() => setIsCollapsed(!isCollapsed)}
           >
             <FiChevronLeft className={`text-[#6f5b3e] transition-transform duration-500 ${isCollapsed ? 'rotate-180' : ''}`} />
@@ -289,7 +301,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
         {/* Mobile Close */}
         <button
-          className="md:hidden fixed top-6 right-6 w-11 h-11 rounded-full bg-[#fdfaf5] border border-[#d6c8b8] shadow-xl flex items-center justify-center z-[70]"
+          className="md:hidden fixed top-6 right-6 w-11 h-11 rounded-full bg-[#fdfaf5] border border-[#d6c8b8] shadow-xl flex items-center justify-center z-[47]"
           onClick={() => setSidebarOpen(false)}
         >
           <FiX className="text-xl text-[#6f5b3e]" />
@@ -307,52 +319,88 @@ const MannequinIcon = () => (
 
 const HomeIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
+    <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z">
+      <animate attributeName="stroke-dasharray" values="0 100;100 0;0 100" dur="3s" repeatCount="indefinite" />
+    </path>
   </svg>
 );
 
 const UsersIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm14 14v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2">
+      <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
+    </path>
+    <circle cx="9" cy="7" r="4">
+      <animate attributeName="r" values="4;4.5;4" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" />
+    </path>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75">
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite" />
+    </path>
   </svg>
 );
 
 const UserIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2">
+      <animate attributeName="stroke-dasharray" values="0 50;50 0" dur="2s" repeatCount="indefinite" />
+    </path>
+    <circle cx="12" cy="11" r="4">
+      <animate attributeName="r" values="4;4.3;4" dur="1.5s" repeatCount="indefinite" />
+    </circle>
   </svg>
 );
 
 const InvoiceIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-    <polyline points="14 2 14 8 20 8" />
-    <line x1="16" y1="13" x2="8" y2="13" />
-    <line x1="16" y1="17" x2="8" y2="17" />
-    <line x1="10" y1="9" x2="8" y2="9" />
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+      <animate attributeName="stroke-dasharray" values="0 100;100 0" dur="3s" repeatCount="indefinite" />
+    </path>
+    <polyline points="14 2 14 8 20 8">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
+    </polyline>
+    <circle cx="10" cy="14" r="2">
+      <animate attributeName="r" values="2;2.5;2" dur="1.5s" repeatCount="indefinite" />
+    </circle>
+    <path d="M10 12v6" />
   </svg>
 );
 
 const ReportIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-    <polyline points="14 2 14 8 20 8" />
-    <line x1="16" y1="13" x2="8" y2="13" />
-    <line x1="16" y1="17" x2="8" y2="17" />
-    <polyline points="10 9 9 9 8 9" />
+    <line x1="18" y1="20" x2="18" y2="10">
+      <animate attributeName="y2" values="10;8;10" dur="1.5s" repeatCount="indefinite" />
+    </line>
+    <line x1="12" y1="20" x2="12" y2="4">
+      <animate attributeName="y2" values="4;2;4" dur="1.5s" repeatCount="indefinite" />
+    </line>
+    <line x1="6" y1="20" x2="6" y2="14">
+      <animate attributeName="y2" values="14;12;14" dur="1.5s" repeatCount="indefinite" />
+    </line>
   </svg>
 );
 
 const SettingsIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="12" cy="12" r="3" />
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="8s" repeatCount="indefinite" />
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </g>
   </svg>
 );
 
 const LogoutIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    <polyline points="16 17 21 12 16 7">
+      <animate attributeName="points" values="16 17 21 12 16 7;17 17 22 12 17 7;16 17 21 12 16 7" dur="1.5s" repeatCount="indefinite" />
+    </polyline>
+    <line x1="21" y1="12" x2="9" y2="12">
+      <animate attributeName="stroke-dasharray" values="0 20;20 0" dur="2s" repeatCount="indefinite" />
+    </line>
   </svg>
 );
 

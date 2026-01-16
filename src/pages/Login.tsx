@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const Login: React.FC = () => {
+interface LoginProps {
+  onTriggerLoader: () => void;
+  onLoaderComplete: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onTriggerLoader, onLoaderComplete }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
@@ -29,9 +34,16 @@ const Login: React.FC = () => {
       });
 
       toast.success("Login successful");
-
       setLoading(false);
-      navigate("/dashboard");
+      
+      onTriggerLoader();
+      
+      setTimeout(() => {
+        navigate("/dashboard");
+        setTimeout(() => {
+          onLoaderComplete();
+        }, 1600);
+      }, 100);
     }, 1200);
   };
 
