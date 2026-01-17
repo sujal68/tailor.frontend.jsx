@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import StatCard from "../components/StatCard";
 import Chart from "../components/chart";
 import SystemHealth from "../components/SystemHealth";
-import Table from "../components/table";
+import RecentRegistrationsTable from "../components/RecentRegistrationsTable";
 import customerCard from "../assets/total-customer-card.png";
 import measurementCard from "../assets/total-maesurement.png";
 import adminCard from "../assets/Total-admin-card.png";
@@ -14,7 +15,12 @@ export default function Dashboard(): React.JSX.Element {
     const [filters, setFilters] = useState<FilterState>({ dateRange: "30", business: "all", city: "all", status: "all" });
 
     return (
-        <div className="px-4 sm:px-6 pb-6 pt-1">
+        <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="px-4 sm:px-6 pb-6 pt-1"
+        >
 
                     <div className="flex flex-col lg:flex-row justify-between items-start mb-[22px] gap-5">
                         {/* Left Title */}
@@ -89,9 +95,17 @@ export default function Dashboard(): React.JSX.Element {
                     </div>
 
                     <div className="mt-10">
-                        <Table />
+                        <div className="font-['Inter',sans-serif] text-[#4e463e]">
+                            <div className="main-container max-w-[1154px] [body.sidebar-collapsed_&]:max-w-[1334px] mx-auto bg-gradient-to-b from-white/60 to-white/30 rounded-[18px] p-[18px] sm:p-[26px] border border-white transition-[max-width] duration-350 ease-in-out">
+                                <div className="mb-4">
+                                    <h3 className="text-lg font-semibold text-[#6f5b3e] mb-2">Recent Registrations</h3>
+                                    <p className="text-sm text-[#8b7a63]">Latest tailor shop registrations</p>
+                                </div>
+                                <RecentRegistrationsTable />
+                            </div>
+                        </div>
                     </div>
 
-                </div>
+                </motion.div>
     );
 }

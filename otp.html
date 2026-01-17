@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification - Tailor Management</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 0;
+        }
+        .header {
+            background: linear-gradient(135deg, #6f5b3e 0%, #8b7a63 100%);
+            padding: 30px 40px;
+            text-align: center;
+        }
+        .logo {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .tagline {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            margin: 5px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .content {
+            padding: 40px;
+            background-color: #ffffff;
+        }
+        .greeting {
+            font-size: 18px;
+            color: #333333;
+            margin: 0 0 20px 0;
+            font-weight: 600;
+        }
+        .message {
+            font-size: 16px;
+            color: #666666;
+            margin: 0 0 30px 0;
+            line-height: 1.5;
+        }
+        .otp-section {
+            background: linear-gradient(135deg, #f9f4ef 0%, #f1ebe0 100%);
+            border: 2px dashed #d6c8b8;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .otp-label {
+            font-size: 14px;
+            color: #8b7a63;
+            margin: 0 0 15px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .otp-code {
+            font-size: 36px;
+            font-weight: bold;
+            color: #6f5b3e;
+            letter-spacing: 8px;
+            margin: 0 0 15px 0;
+            font-family: Courier New, monospace;
+            background: #ffffff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid #e8dfd5;
+            display: inline-block;
+        }
+        .otp-validity {
+            font-size: 14px;
+            color: #999999;
+            margin: 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .warning-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #856404;
+            margin: 0 0 10px 0;
+        }
+        .warning-text {
+            font-size: 14px;
+            color: #856404;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .support-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .support-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333333;
+            margin: 0 0 10px 0;
+        }
+        .support-text {
+            font-size: 14px;
+            color: #666666;
+            margin: 0 0 15px 0;
+        }
+        .support-email {
+            color: #6f5b3e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer {
+            background-color: #2c2c2c;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        .footer-text {
+            color: #cccccc;
+            font-size: 14px;
+            margin: 0 0 10px 0;
+        }
+        .footer-links {
+            margin: 20px 0 0 0;
+        }
+        .footer-link {
+            color: #8b7a63;
+            text-decoration: none;
+            font-size: 12px;
+            margin: 0 15px;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+            margin: 30px 0;
+            border: none;
+        }
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+            }
+            .header, .content, .footer {
+                padding: 20px !important;
+            }
+            .otp-code {
+                font-size: 28px !important;
+                letter-spacing: 4px !important;
+                padding: 12px 20px !important;
+            }
+            .otp-section {
+                padding: 20px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1 class="logo">TAILOR</h1>
+            <p class="tagline">Management System</p>
+        </div>
+        <div class="content">
+            <h2 class="greeting">Hello User,</h2>
+            <p class="message">
+                We received a request to verify your identity for your Tailor Management account. 
+                Please use the verification code below to complete the process.
+            </p>
+            <div class="otp-section">
+                <p class="otp-label">Your Verification Code</p>
+                <div class="otp-code">123456</div>
+                <p class="otp-validity">This code will expire in 10 minutes</p>
+            </div>
+            <p class="message">
+                Enter this code in the verification form to continue. If you didn't request this code, 
+                please ignore this email or contact our support team.
+            </p>
+            <hr class="divider">
+            <div class="warning">
+                <p class="warning-title">🔒 Security Notice</p>
+                <p class="warning-text">
+                    Never share this code with anyone. Our team will never ask for your verification code 
+                    via phone, email, or any other method.
+                </p>
+            </div>
+            <div class="support-section">
+                <p class="support-title">Need Help?</p>
+                <p class="support-text">
+                    If you're having trouble with verification, our support team is here to help.
+                </p>
+                <a href="mailto:support@tailormanagement.com" class="support-email">
+                    support@tailormanagement.com
+                </a>
+            </div>
+        </div>
+        <div class="footer">
+            <p class="footer-text">
+                © 2024 Tailor Management System. All rights reserved.
+            </p>
+            <p class="footer-text">
+                This email was sent to verify your account. Please do not reply to this email.
+            </p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

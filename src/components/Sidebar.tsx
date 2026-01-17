@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiChevronLeft, FiX, FiChevronDown } from "react-icons/fi";
+import { useNavigate, useLocation } from 'react-router-dom';
 import measerTap from "../assets/measerTap.png";
 
 interface SidebarProps {
@@ -8,9 +9,13 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [activeItem, setActiveItem] = useState<string>('Dashboard');
+  const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
+  const [hoverTimeout, setHoverTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,32 +46,32 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
       name: 'Tailors',
       icon: <UsersIcon />,
       subItems: [
-        { name: 'All Tailors', path: '/tailors' },
-        { name: 'Add Tailor', path: '/tailors/add' },
-        { name: 'Recent Registrations', path: '/tailors/recent' },
+        { name: 'All Tailors', path: '/dashboard/all-tailors' },
+        { name: 'Add Tailor', path: '/dashboard/add-tailor' },
+        { name: 'Recent Registrations', path: '/dashboard/recent-registrations' },
       ],
     },
     {
       name: 'Customers',
       icon: <UserIcon />,
       subItems: [
-        { name: 'All Customers', path: '/customers' },
+        { name: 'All Customers', path: '/dashboard/customers' },
       ],
     },
     {
       name: 'Invoices',
       icon: <InvoiceIcon />,
       subItems: [
-        { name: 'All Invoices', path: '/invoices' },
+        { name: 'All Invoices', path: '/dashboard/invoices' },
       ],
     },
     {
       name: 'Reports',
       icon: <ReportIcon />,
       subItems: [
-        { name: 'Business Report', path: '/reports/business' },
-        { name: 'Revenue Report', path: '/reports/revenue' },
-        { name: 'Tailor Performance', path: '/reports/performance' },
+        { name: 'Business Report', path: '/dashboard/reports' },
+        { name: 'Revenue Report', path: '/dashboard/reports' },
+        { name: 'Tailor Performance', path: '/dashboard/reports' },
       ],
     },
   ];
@@ -76,12 +81,12 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
       name: 'Settings',
       icon: <SettingsIcon />,
       subItems: [
-        { name: 'Admin Profile', path: '/settings/profile' },
-        { name: 'System Settings', path: '/settings/system' },
-        { name: 'Security', path: '/settings/security' },
+        { name: 'Admin Profile', path: '/dashboard/settings' },
+        { name: 'System Settings', path: '/dashboard/settings' },
+        { name: 'Security', path: '/dashboard/settings' },
       ],
     },
-    { name: 'Logout', icon: <LogoutIcon />, path: '/logout' },
+    { name: 'Logout', icon: <LogoutIcon />, path: '/login' },
   ];
 
   const toggleMenu = (menuName: string) => {
@@ -93,14 +98,28 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
       toggleMenu(item.name);
     } else {
       setActiveItem(item.name);
+      if (item.path) navigate(item.path);
       if (window.innerWidth < 768) setSidebarOpen(false);
     }
   };
 
-  const handleSubItemClick = (subItemName: string) => {
+  const handleSubItemClick = (subItemName: string, path: string) => {
     setActiveItem(subItemName);
+    navigate(path);
     if (window.innerWidth < 768) setSidebarOpen(false);
   };
+
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/dashboard') setActiveItem('Dashboard');
+    else if (path.includes('/add-tailor')) setActiveItem('Add Tailor');
+    else if (path.includes('/all-tailors')) setActiveItem('All Tailors');
+    else if (path.includes('/admins')) setActiveItem('All Tailors');
+    else if (path.includes('/customers')) setActiveItem('All Customers');
+    else if (path.includes('/invoices')) setActiveItem('All Invoices');
+    else if (path.includes('/reports')) setActiveItem('Business Report');
+    else if (path.includes('/settings')) setActiveItem('Admin Profile');
+  }, [location.pathname]);
 
   return (
     <>
@@ -150,6 +169,35 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
           opacity: 1;
           margin-top: 4px;
         }
+        
+        .collapsed-submenu {
+          position: fixed;
+          left: 140px;
+          background: #fdfaf5;
+          border: 1.5px solid #d6c8b8;
+          border-radius: 16px;
+          padding: 8px;
+          min-width: 200px;
+          box-shadow: 0 8px 24px rgba(93, 74, 59, 0.15);
+          z-index: 50;
+          animation: slideIn 0.2s ease-out;
+          transition: opacity 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        .collapsed-submenu.fade-out {
+          opacity: 0;
+        }
       `}</style>
 
       <div
@@ -180,9 +228,25 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
             {/* Navigation */}
             <nav className="flex-grow overflow-y-auto overflow-x-hidden custom-scrollbar px-3 py-2 space-y-1.5">
               {navItems.map((item) => (
-                <div key={item.name} className="relative">
+                <div 
+                  key={item.name} 
+                  className="relative"
+                  onMouseEnter={() => {
+                    if (isCollapsed && item.subItems) {
+                      if (hoverTimeout) clearTimeout(hoverTimeout);
+                      setHoveredMenu(item.name);
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (isCollapsed && item.subItems) {
+                      const timeout = setTimeout(() => setHoveredMenu(null), 150);
+                      setHoverTimeout(timeout);
+                    }
+                  }}
+                >
                   <button
                     onClick={() => handleItemClick(item)}
+                    data-menu={item.name}
                     className={`
                       group flex items-center gap-4 p-3.5 rounded-[18px] transition-all duration-300 w-full text-left relative
                       ${activeItem === item.name || openMenu === item.name 
@@ -216,7 +280,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                           {item.subItems.map((subItem) => (
                             <button
                               key={subItem.name}
-                              onClick={() => handleSubItemClick(subItem.name)}
+                              onClick={() => handleSubItemClick(subItem.name, subItem.path)}
                               className={`
                                 text-left p-2.5 px-4 rounded-xl text-[13.5px] transition-all duration-200
                                 ${activeItem === subItem.name 
@@ -231,6 +295,39 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                       </div>
                     </div>
                   )}
+                  
+                  {/* Collapsed Hover Menu */}
+                  {item.subItems && isCollapsed && hoveredMenu === item.name && (
+                    <div 
+                      className="collapsed-submenu" 
+                      style={{ top: `${document.querySelector(`button[data-menu="${item.name}"]`)?.getBoundingClientRect().top}px` }}
+                      onMouseEnter={() => {
+                        if (hoverTimeout) clearTimeout(hoverTimeout);
+                        setHoveredMenu(item.name);
+                      }}
+                      onMouseLeave={() => {
+                        const timeout = setTimeout(() => setHoveredMenu(null), 150);
+                        setHoverTimeout(timeout);
+                      }}
+                    >
+                      <div className="flex flex-col gap-1">
+                        {item.subItems.map((subItem) => (
+                          <button
+                            key={subItem.name}
+                            onClick={() => handleSubItemClick(subItem.name, subItem.path)}
+                            className={`
+                              text-left p-2.5 px-4 rounded-xl text-[13.5px] transition-all duration-200
+                              ${activeItem === subItem.name 
+                                ? 'bg-[rgba(232,223,210,0.7)] text-[#5d4a3b] font-semibold' 
+                                : 'text-[#8a7a6a] hover:bg-[rgba(232,223,210,0.3)] hover:text-[#5d4a3b]'}
+                            `}
+                          >
+                            {subItem.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </nav>
@@ -240,9 +337,25 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
               <div className="mb-4 border-t-[1.5px] border-dashed border-[#d6c8b8] w-full opacity-60"></div>
               <div className="space-y-1.5">
                 {footerItems.map((item) => (
-                  <div key={item.name}>
+                  <div 
+                    key={item.name}
+                    onMouseEnter={() => {
+                      if (isCollapsed && item.subItems) {
+                        if (hoverTimeout) clearTimeout(hoverTimeout);
+                        setHoveredMenu(item.name);
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      if (isCollapsed && item.subItems) {
+                        const timeout = setTimeout(() => setHoveredMenu(null), 150);
+                        setHoverTimeout(timeout);
+                      }
+                    }}
+                    className="relative"
+                  >
                     <button
                       onClick={() => handleItemClick(item)}
+                      data-menu={item.name}
                       className={`
                         group flex items-center gap-4 p-3.5 rounded-[18px] transition-all duration-300 w-full text-left
                         ${activeItem === item.name ? 'bg-[#e8dfd29e] text-[#5d4a3b]' : 'text-[#7c6a5a] hover:bg-[rgba(232,223,210,0.3)] hover:shadow-sm'}
@@ -261,7 +374,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                             {item.subItems.map((subItem) => (
                               <button
                                 key={subItem.name}
-                                onClick={() => handleSubItemClick(subItem.name)}
+                                onClick={() => handleSubItemClick(subItem.name, subItem.path)}
                                 className={`
                                   text-left p-2.5 px-4 rounded-xl text-[13.5px] transition-all duration-200
                                   ${activeItem === subItem.name 
@@ -273,6 +386,39 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                               </button>
                             ))}
                           </div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Collapsed Hover Menu */}
+                    {item.subItems && isCollapsed && hoveredMenu === item.name && (
+                      <div 
+                        className="collapsed-submenu" 
+                        style={{ top: `${document.querySelector(`button[data-menu="${item.name}"]`)?.getBoundingClientRect().top}px` }}
+                        onMouseEnter={() => {
+                          if (hoverTimeout) clearTimeout(hoverTimeout);
+                          setHoveredMenu(item.name);
+                        }}
+                        onMouseLeave={() => {
+                          const timeout = setTimeout(() => setHoveredMenu(null), 150);
+                          setHoverTimeout(timeout);
+                        }}
+                      >
+                        <div className="flex flex-col gap-1">
+                          {item.subItems.map((subItem) => (
+                            <button
+                              key={subItem.name}
+                              onClick={() => handleSubItemClick(subItem.name, subItem.path)}
+                              className={`
+                                text-left p-2.5 px-4 rounded-xl text-[13.5px] transition-all duration-200
+                                ${activeItem === subItem.name 
+                                  ? 'bg-[rgba(232,223,210,0.7)] text-[#5d4a3b] font-semibold' 
+                                  : 'text-[#8a7a6a] hover:bg-[rgba(232,223,210,0.3)] hover:text-[#5d4a3b]'}
+                              `}
+                            >
+                              {subItem.name}
+                            </button>
+                          ))}
                         </div>
                       </div>
                     )}
